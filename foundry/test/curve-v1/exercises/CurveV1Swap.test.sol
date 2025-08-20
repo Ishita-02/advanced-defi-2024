@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
+pragma solidity 0.8.30;
 
 import {Test, console2} from "forge-std/Test.sol";
 import {IStableSwap3Pool} from
@@ -25,6 +25,7 @@ contract CurveV1SwapTest is Test {
         // Calculate swap from DAI to USDC
         // Write your code here
         uint256 dy = 0;
+        dy = pool.get_dy_underlying(0, 1, 1000000 * 1e18);
 
         console2.log("dy %e", dy);
         assertGt(dy, 0, "dy = 0");
@@ -35,6 +36,8 @@ contract CurveV1SwapTest is Test {
     function test_exchange() public {
         // Swap DAI to USDC
         // Write your code here
+
+        pool.exchange(0, 1, 1e6 * 1e18, 0.999 * 1e6 * 1e6);
 
         uint256 bal = usdc.balanceOf(address(this));
         console2.log("USDC balance %e", bal);
