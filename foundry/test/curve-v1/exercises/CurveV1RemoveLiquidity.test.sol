@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
+pragma solidity 0.8.30;
 
 import {Test, console2} from "forge-std/Test.sol";
 import {IStableSwap3Pool} from
@@ -41,6 +41,8 @@ contract CurveV1RemoveLiquidityTest is Test {
 
         // Write your code here
 
+        pool.remove_liquidity(IERC20(lp).balanceOf(address(this)), [uint256(1),uint256(1),uint256(1)]);
+
         uint256[3] memory balsAfter = [
             dai.balanceOf(address(this)),
             usdc.balanceOf(address(this)),
@@ -73,6 +75,7 @@ contract CurveV1RemoveLiquidityTest is Test {
         ];
 
         // Write your code here
+        pool.remove_liquidity_one_coin(IERC20(lp).balanceOf(address(this)), 0, uint256(1));
 
         uint256[3] memory balsAfter = [
             dai.balanceOf(address(this)),

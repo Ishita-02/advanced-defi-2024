@@ -32,7 +32,18 @@ contract UniswapV3SwapTest is Test {
 
         // Write your code here
         // Call router.exactInputSingle
-        uint256 amountOut = 0;
+
+        uint256 amountOut = router.exactInputSingle(
+            ISwapRouter.ExactInputSingleParams({ 
+                tokenIn: address(dai),
+                tokenOut : address(weth),
+                fee: POOL_FEE,
+                recipient: address(this),
+                amountIn: 1000 * 1e18,
+                amountOutMinimum: 1,
+                sqrtPriceLimitX96: 0
+            })
+        );
 
         uint256 wethAfter = weth.balanceOf(address(this));
 
@@ -50,8 +61,17 @@ contract UniswapV3SwapTest is Test {
     function test_exactInput() public {
         // Write your code here
         // Call router.exactInput
-        bytes memory path;
+        bytes memory path = abi.encodePacked(address(dai), uint24(3000), address(weth), uint24(3000), address(wbtc));
         uint256 amountOut = 0;
+
+        amountOut = router.exactInput(
+            ISwapRouter.ExactInputParams({
+                path: path,
+                recipient: address(this),
+                amountIn: 1000 * 1e18,
+                amountOutMinimum: 1
+            })
+        );
 
         console2.log("WBTC amount out %e", amountOut);
         assertGt(amountOut, 0);
@@ -67,6 +87,17 @@ contract UniswapV3SwapTest is Test {
         // Write your code here
         // Call router.exactOutputSingle
         uint256 amountIn = 0;
+        amountIn = router.exactOutputSingle(
+            ISwapRouter.ExactOutputSingleParams({
+                tokenIn: address(dai),
+                tokenOut : address(weth),
+                fee: POOL_FEE,
+                recipient: address(this),
+                amountOut: 0.1 * 1e18,
+                amountInMaximum: 1000 * 1e18,
+                sqrtPriceLimitX96: 0
+            })
+        );
 
         uint256 wethAfter = weth.balanceOf(address(this));
 
@@ -84,8 +115,15 @@ contract UniswapV3SwapTest is Test {
     function test_exactOutput() public {
         // Write your code here
         // Call router.exactOutput
-        bytes memory path;
-        uint256 amountIn = 0;
+        bytes memory path = abi.encodePacked(address(WBTC), uint24(3000), address(WETH), uint24(3000), address(DAI));
+        uint256 amountIn = router.exactOutput(
+            ISwapRouter.ExactOutputParams({
+                path: path,
+                recipient: address(this),
+                amountOut: 0.01 * 1e8,
+                amountInMaximum: 1000 * 1e18
+            })
+        );
 
         console2.log("DAI amount in %e", amountIn);
         assertLe(amountIn, 1000 * 1e18);
