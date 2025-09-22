@@ -32,6 +32,7 @@ contract UniswapV3FactoryTest is Test {
         // Write your code here
         address pool = factory.getPool(DAI, USDC, 100);
         assertEq(pool, UNISWAP_V3_POOL_DAI_USDC_100);
+
     }
 
     // Exercise 2 - Deploy a new pool with tokenA and tokenB, 0.1% fee
