@@ -116,6 +116,22 @@ contract UniswapV3LiquidityTest is Test {
         (uint256 tokenId, uint128 liquidity, uint256 amount0, uint256 amount1) =
             (0, 0, 0, 0);
 
+        manager.mint(
+            INonfungiblePositionManager.MintParams({
+                token0: DAI,
+                token1: WETH,
+                fee: POOL_FEE,
+                tickLower: MIN_TICK / TICK_SPACING * TICK_SPACING,
+                tickUpper: MAX_TICK / TICK_SPACING * TICK_SPACING,
+                amount0Desired: 1000 * 1e18,
+                amount1Desired: 1e18,
+                amount0Min: 0,
+                amount1Min: 0,
+                recipient: address(this),
+                deadline: block.timestamp
+            })
+        );
+
         console2.log("Amount 0 added %e", amount0);
         console2.log("Amount 1 added %e", amount1);
 
